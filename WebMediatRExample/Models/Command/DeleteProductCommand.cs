@@ -2,5 +2,8 @@
 
 namespace WebMediatRExample.Models.Command
 {
-    public record DeleteProductCommand(int id) : IRequest<int>;
+    public record DeleteProductCommand: IRequest<int>
+    {
+        public int Id { get; set; }
+    }
 }

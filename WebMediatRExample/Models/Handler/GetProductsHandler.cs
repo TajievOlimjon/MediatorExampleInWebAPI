@@ -1,17 +1,26 @@
 ﻿using MediatR;
+using SQLitePCL;
 using WebMediatRExample.Data;
 using WebMediatRExample.Models.Queries;
+using WebMediatRExample.Models.Queries.QueryResponse;
+using WebMediatRExample.Repozitories.IRepozitory;
+using WebMediatRExample.Services.ProductServices;
 
 namespace WebMediatRExample.Models.Handler 
 { 
-    public class GetProductsHandler: IRequestHandler<GetAllProductsQuery, IEnumerable<Product>>
+    public class GetProductsHandler: IRequestHandler<GetAllProductsQuery, List<ProductQueryResponse>>
     {
-        private readonly FakeDataStore _fakeDataStore;
+        private readonly IProductService _productService;
 
-        public GetProductsHandler(FakeDataStore fakeDataStore) => _fakeDataStore = fakeDataStore;
-       
-     
-        public async Task<IEnumerable<Product>> Handle(GetAllProductsQuery request,
-            CancellationToken cancellationToken) => await _fakeDataStore.GetAllProducts();
+        public GetProductsHandler(IProductService productService)
+        {
+            _productService = productService;
+        }
+
+        public async Task<List<ProductQueryResponse>> Handle(GetAllProductsQuery request,CancellationToken cancellationToken)
+        {
+            return await _productService.GetAllAsync();
+
+        }
     }
 }

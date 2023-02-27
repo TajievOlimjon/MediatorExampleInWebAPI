@@ -28,31 +28,31 @@ namespace WebMediatRExample.Controllers
         [HttpGet("{id:int}",Name = "GetProductById")]
         public async Task<IActionResult> GetProductById(int id)
         {
-            var products = await _mediator.Send(new GetProductByIdQuery(id));
+            var products = await _mediator.Send(new GetProductByIdQuery{Id=id});
 
             return Ok(products);
         }
         [HttpPost("AddProduct")]
-        public async Task<IActionResult> AddProduct(Product product)
+        public async Task<IActionResult> AddProduct(AddProductCommand addProductCommand)
         {
-            if(product is null)
+            if(addProductCommand is null)
             {
                 return BadRequest();
             }
-            var result = await _mediator.Send(new AddProductCommand(product));
+            var result = await _mediator.Send(addProductCommand);
 
-            await _mediator.Publish(new ProductAddedNotification(result));
+            //await _mediator.Publish(new ProductAddedNotification(result));
 
             return CreatedAtRoute("GetProductById", new { id = result.Id }, result);
         }
         [HttpPut("UpdateProduct")]
-        public async Task<IActionResult> UpdateProduct(Product product)
+        public async Task<IActionResult> UpdateProduct(UpdateProductCommand updateProductCommand)
         {
-            if (product is null)
+            if (updateProductCommand is null)
             {
                 return BadRequest();
             }
-            var result = await _mediator.Send(new UpdateProductCommand(product));
+            var result = await _mediator.Send(updateProductCommand);
             return Ok(result);
         }
         [HttpDelete("DeleteProduct")]
@@ -62,7 +62,7 @@ namespace WebMediatRExample.Controllers
             {
                 return BadRequest();
             }
-            var result = await _mediator.Send(new DeleteProductCommand(id));
+            var result = await _mediator.Send(new DeleteProductCommand { Id=id});
             return Ok(result);
         }
     }

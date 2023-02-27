@@ -1,7 +1,11 @@
 ﻿using MediatR;
+using WebMediatRExample.Models.Command.ResponseCommand;
 
 namespace WebMediatRExample.Models.Command
 {
-    public record AddProductCommand(Product product ): IRequest<Product>;
+    public class AddProductCommand: IRequest<ProductCommandResponse>
+    {
+        public string Name { get; set; }
+    }
 }
 

@@ -2,16 +2,21 @@
 using WebMediatRExample.Data;
 using WebMediatRExample.Models;
 using WebMediatRExample.Models.Queries;
+using WebMediatRExample.Models.Queries.QueryResponse;
+using WebMediatRExample.Services.ProductServices;
 
 namespace WebMediatRExample.Models.Handler
 {
-    public class GetProductByIdHandler : IRequestHandler<GetProductByIdQuery, Product>
+    public class GetProductByIdHandler : IRequestHandler<GetProductByIdQuery, ProductQueryResponse>
     {
-        private readonly FakeDataStore _fakeDataStore;
-        public GetProductByIdHandler(FakeDataStore fakeDataStore) => _fakeDataStore = fakeDataStore;
-        public async Task<Product> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+        private readonly IProductService _productService;
+        public GetProductByIdHandler(IProductService productService)
         {
-           return await _fakeDataStore.GetProductById(request.id);
+            _productService = productService;
+        }
+        public async Task<ProductQueryResponse> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+        {
+           return await _productService.GetAsync(request.Id);
         }
     }
 }

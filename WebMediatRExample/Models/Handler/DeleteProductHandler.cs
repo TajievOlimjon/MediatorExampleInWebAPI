@@ -1,20 +1,20 @@
 ﻿using MediatR;
 using WebMediatRExample.Data;
 using WebMediatRExample.Models.Command;
+using WebMediatRExample.Services.ProductServices;
 
 namespace WebMediatRExample.Models.Handler
 {
     public class DeleteProductHandler : IRequestHandler<DeleteProductCommand, int>
     {
-        private readonly FakeDataStore _fakeDataStore;
-        public DeleteProductHandler(FakeDataStore fakeDataStore)
+        private readonly IProductService _productService;
+        public DeleteProductHandler(IProductService productService)
         {
-            _fakeDataStore = fakeDataStore;
+            _productService = productService;
         }
         public async Task<int> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
         {
-            await _fakeDataStore.DeleteProduct(request.id);
-            return request.id;
+           return await _productService.DeleteAsync(request.Id);
         }
     }
 }

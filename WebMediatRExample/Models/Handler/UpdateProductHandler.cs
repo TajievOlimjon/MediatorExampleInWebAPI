@@ -1,21 +1,21 @@
 ﻿using MediatR;
 using WebMediatRExample.Data;
 using WebMediatRExample.Models.Command;
+using WebMediatRExample.Models.Command.ResponseCommand;
+using WebMediatRExample.Services.ProductServices;
 
 namespace WebMediatRExample.Models.Handler
 {
-    public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, Product>
+    public class UpdateProductHandler : IRequestHandler<UpdateProductCommand, ProductCommandResponse>
     {
-        private readonly FakeDataStore _fakeDataStore;
-        public UpdateProductHandler(FakeDataStore fakeDataStore)
+        private readonly IProductService _productService;
+        public UpdateProductHandler(IProductService productService)
         {
-            _fakeDataStore = fakeDataStore;
+            _productService = productService;
         }
-        public async Task<Product> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
+        public async Task<ProductCommandResponse> Handle(UpdateProductCommand request, CancellationToken cancellationToken)
         {
-            await _fakeDataStore.UpdateProduct(request.product);
-
-            return request.product;
+          return  await _productService.UpdateAsync(request);
         }
     }
 }

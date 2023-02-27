@@ -15,7 +15,6 @@ namespace WebMediatRExample.Models.Handler
         {
             var category = new Category
             {
-                Id=request.Id,
                 Name=request.Name
             };
             await _fakeDataStore.AddCategory(category);
